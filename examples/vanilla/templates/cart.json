@@ -1,0 +1,92 @@
+{
+  "view_cart": {
+    "event": "view_cart",
+    "event_type": "event_ecomm_recommended",
+    "ecommerce": {
+      "currency": "usd",
+      "value": {
+        "required": true,
+        "type": "number"
+      },
+      "items": [
+        {
+          "item_id": {
+            "required": true,
+            "type": "number"
+          },
+          "item_name": "",
+          "item_variant": "",
+          "item_vendor": "",
+          "price": {
+            "required": true,
+            "type": "number"
+          },
+          "quantity": {
+            "required": true,
+            "type": "number"
+          }
+        }
+      ]
+    }
+  },
+  "add_to_cart": {
+    "event": "add_to_cart",
+    "event_type": "event_ecomm_recommended",
+    "ecommerce": {
+      "currency": "usd",
+      "value": {
+        "required": true,
+        "type": "number"
+      },
+      "items": [
+        {
+          "item_id": {
+            "required": true,
+            "type": "number"
+          },
+          "item_name": "",
+          "item_variant": "",
+          "item_vendor": "",
+          "price": {
+            "required": true,
+            "type": "number"
+          },
+          "quantity": {
+            "required": true,
+            "type": "number"
+          }
+        }
+      ]
+    }
+  },
+  "remove_from_cart": {
+    "event": "remove_from_cart",
+    "event_type": "event_ecomm_recommended",
+    "ecommerce": {
+      "currency": "usd",
+      "value": {
+        "required": true,
+        "type": "number"
+      },
+      "items": [
+        {
+          "item_id": {
+            "required": true,
+            "type": "number"
+          },
+          "item_name": "",
+          "item_variant": "",
+          "item_vendor": "",
+          "price": {
+            "required": true,
+            "type": "number"
+          },
+          "quantity": {
+            "required": true,
+            "type": "number"
+          }
+        }
+      ]
+    }
+  }
+}

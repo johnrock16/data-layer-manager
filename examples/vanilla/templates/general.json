@@ -1,0 +1,12 @@
+{
+  "click": {
+    "event": "click",
+    "event_type": "event_custom",
+    "custom_section": "",
+    "custom_type": "",
+    "custom_title": {
+      "required": true,
+      "type": "string"
+    }
+  }
+}
