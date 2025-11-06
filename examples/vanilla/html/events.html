@@ -34,6 +34,7 @@
   .btn{border:0;padding:8px 12px;border-radius:6px;cursor:pointer;background:#0b5fff;color:#fff;font-size:13px;text-decoration:none;}
   .link-btn{background:#10b981}
   .copy-btn{background:#0b5fff}
+  .push-btn{background:#dc7c03}
   .source.small{font-size:12px;color:#6b7280}
   footer{margin-top:24px;color:#6b7280;font-size:13px}
   @media(max-width:900px){.layout{grid-template-columns:1fr}}
@@ -41,6 +42,221 @@
 </style>
 </head>
 <body>
+  <script type="module" defer>
+    const DATA_LAYER_MANAGER_CONFIG = {
+  titles: {
+    x: 'close',
+  },
+  types: {
+    icon: 'icon',
+    button: 'button',
+    card: 'card',
+    field: 'field',
+    filter: 'filter',
+    search: 'search',
+    menu: 'menu',
+    checkbox: 'checkbox',
+    footer: 'footer',
+  },
+  tags: {
+    button: 'button',
+    i: 'icon',
+    svg: 'icon',
+    path: 'icon',
+    img: 'card',
+    figure: 'card',
+    footer: 'footer',
+    span: 'inherit',
+  },
+  pages: {
+    products: 'pdp',
+    collections: 'plp',
+    search: 'search',
+    cart: 'cart',
+    home: 'home',
+    pages: 'pages',
+  },
+  pathnames: {
+    pdp: () => `pdp:${window.product.handle}`,
+    plp: () => `plp:${window.location.pathname.substring(1).replace(/\//g, '-')}`,
+    search: () => `search`,
+    home: () => `home`,
+    cart: () => 'cart',
+    pages: () => window.location.pathname.substring(1).replace(/\//g, '-'),
+  },
+};
+
+export default DATA_LAYER_MANAGER_CONFIG;
+
+    window.DATA_LAYER_MANAGER_CONFIG = DATA_LAYER_MANAGER_CONFIG;
+  </script>
+  <script type="module" defer>
+    const DataLayerManager = function (eventTemplate, googleTagManagerConfig, config = { test: false }) {
+  const { titles: GTM_TITLES, types, tags, pages: PAGE_CODES, pathnames: LOCATION_PATHS } = googleTagManagerConfig;
+
+  const GTM_EVENTS = eventTemplate;
+  const GTM_TYPES = { ...types, tags };
+
+  const getLocationPathname = () => {
+    const pagePath = window.location.pathname.split("/")[1] || "home";
+    const pageCode = PAGE_CODES[pagePath] || PAGE_CODES.home;
+    const resolver = LOCATION_PATHS[pageCode];
+    return typeof resolver === "function" ? resolver() : pagePath;
+  };
+
+  function isValidValue(value) {
+    if (value === null || value === undefined) return false;
+    if (typeof value === "string" && value.trim() === "") return false;
+    return true;
+  }
+
+  function normalizeString(str) {
+    if (!str || typeof str !== "string") return "";
+
+    const stringCleaned = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
+    if (/^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i.test(stringCleaned)) {
+      return stringCleaned;
+    }
+    return stringCleaned.replace(/\s+/g, "-").replace(/[_/]/g, "-").replace(/[^a-z0-9-:]/g, "").replace(/^-+|-+$/g, "").replace(/-+/g, "-");
+  }
+
+  function deepMergeAndClean(event, template, params = {}) {
+    if (Array.isArray(template)) {
+      const arrParams = Array.isArray(params) ? params : [];
+      return arrParams.map((paramItem, index) => {
+        const templateItem = template[index] || template[0] || {};
+        return deepMergeAndClean(event, templateItem, paramItem);
+      }).filter((item) => item && Object.keys(item).length > 0);
+    }
+
+    const result = {};
+    for (const key in template) {
+      if (key === 'docs') continue;
+      const templateValue = template[key];
+      let paramValue = params?.[key];
+
+      const isSchemaLeaf = templateValue && typeof templateValue === "object" && !Array.isArray(templateValue) && ("type" in templateValue || "required" in templateValue || "default" in templateValue);
+
+      if (isSchemaLeaf && templateValue.required) {
+        if (paramValue === undefined || paramValue === null || (typeof paramValue === "string" && paramValue.trim() === "")) {
+          if (templateValue?.default) {
+            paramValue = templateValue?.default
+          } else {
+            throw new Error(`GTM: Missing required field "${key}" for event "${event}"`);
+          }
+        }
+      }
+
+      if (paramValue !== undefined && isSchemaLeaf && templateValue.type) {
+        if (typeof paramValue !== templateValue.type) {
+          throw new Error(`GTM: Type mismatch for "${key}" in event "${event}". Expected "${templateValue.type}", got "${typeof paramValue}"`);
+        }
+      }
+
+      if ( templateValue && typeof templateValue === "object" && !Array.isArray(templateValue) && !isSchemaLeaf) {
+        const nested = deepMergeAndClean(event, templateValue, paramValue);
+        if (nested && Object.keys(nested).length > 0) {
+          result[key] = nested;
+        }
+        continue;
+      }
+
+      if (Array.isArray(templateValue)) {
+        const cleanedArray = deepMergeAndClean(event, templateValue, paramValue);
+        if (cleanedArray && cleanedArray.length > 0) {
+          result[key] = cleanedArray;
+        }
+        continue;
+      }
+
+      if (isSchemaLeaf) {
+        if (paramValue !== undefined) {
+          result[key] = typeof paramValue === "string" ? normalizeString(paramValue) : paramValue;
+        } else if (templateValue.default !== undefined) {
+          result[key] = templateValue.default;
+          continue;
+        }
+      } else {
+        if (isValidValue(paramValue)) {
+          result[key] = typeof paramValue === "string" ? normalizeString(paramValue) : paramValue;
+        } else if (templateValue !== undefined) {
+          if (typeof templateValue !== "object") {
+            result[key] = templateValue;
+          }
+        }
+      }
+    }
+    return result;
+  }
+
+  const pushToDataLayer = (eventKey, params = {}) => {
+    const template = GTM_EVENTS[eventKey];
+    if (!template) {
+      console.warn(`GTM: Event "${eventKey}" not found in template.`);
+      return;
+    }
+
+    try {
+      const cleanedEvent = deepMergeAndClean(template.event, template, params);
+
+      cleanedEvent.custom_section ||= getLocationPathname();
+      window.dataLayer.push(cleanedEvent);
+
+      return {ok: true , event: cleanedEvent};
+    } catch (error) {
+      if (!config.test) {
+        console.error(error);
+      }
+      return {error: error};
+    }
+  };
+
+  const trackElementVisibility = (element, threshold = 0.5) => {
+    if (!element) return;
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.dispatchEvent(new CustomEvent("onScreen:once"));
+          obs.unobserve(entry.target);
+        }
+      });
+    },{threshold});
+
+    observer.observe(element);
+  };
+
+  return {
+    titles: GTM_TITLES,
+    types: GTM_TYPES,
+    pushToDataLayer,
+    trackElementVisibility,
+    normalizeString,
+    getLocationPathname,
+  };
+};
+
+export default DataLayerManager;
+
+    window.DataLayerManager = DataLayerManager;
+  </script>
+  <script type="module" defer>
+    document.addEventListener('DOMContentLoaded', () => {
+      const templates = {"view_cart":{"event":"view_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"required":true,"type":"number"},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"},"quantity":{"required":true,"type":"number"}}]},"docs":{"description":"An event triggered whenever the cart is viewed.","structureExpected":{"event":"view_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":12.24,"items":[{"item_id":48641234,"item_name":"sport-shoes","item_variant":"blue","item_vendor":"sport-products","price":12.24,"quantity":1}]}}}},"add_to_cart":{"event":"add_to_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"required":true,"type":"number"},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"},"quantity":{"required":true,"type":"number"}}]},"docs":{"description":"An event triggered whenever a item is added to cart.","structureExpected":{"event":"add_to_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":12.24,"items":[{"item_id":48641234,"item_name":"sport-shoes","item_variant":"blue","item_vendor":"sport-products","price":12.24,"quantity":1}]}}}},"remove_from_cart":{"event":"remove_from_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"required":true,"type":"number"},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"},"quantity":{"required":true,"type":"number"}}]},"docs":{"description":"An event triggered whenever a item is removed to cart.","structureExpected":{"event":"remove_from_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":12.24,"items":[{"item_id":48641234,"item_name":"sport-shoes","item_variant":"blue","item_vendor":"sport-products","price":12.24,"quantity":1}]}}}},"click":{"event":"click","event_type":"event_custom","custom_section":"","custom_type":"","custom_title":{"required":true,"type":"string"},"docs":{"description":"An event triggered whenever a click happens."}},"view_item":{"event":"view_item","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"type":"number","required":true},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"}}]},"docs":{"description":"An event triggered whenever the product is viewed.","structureExpected":{"event":"view_item","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":19.47,"items":[{"item_id":3405127896,"item_name":"cool-hat","item_variant":"black-white","item_vendor":"hat-company","price":19.47}]}}}},"view_items":{"event":"view_items","event_type":"event_ecomm_recommended","custom_title":"","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"type":"number","required":true},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"}}]}}};
+      window.dataLayer = [];
+      window.dataLayerManager = new window.DataLayerManager(templates, window.DATA_LAYER_MANAGER_CONFIG);
+
+      const pushButtonElements = document.querySelectorAll('.push-btn');
+
+      pushButtonElements.forEach((pushButtonElement) => {
+        pushButtonElement.addEventListener('click', (event) => {
+          const payload = JSON.parse(event.target.getAttribute('data-payload'));
+          window.dataLayerManager.pushToDataLayer(payload.event, payload);
+          console.log(window.dataLayer)
+        });
+      });
+    });
+  </script>
   <div class="container">
     <header class="page-header">
       <h1>Data Layer Manager - Events Documentation</h1>
@@ -100,6 +316,7 @@
     <div class="actions">
       <button data-copy-target="json-cartjson-view_cart" class="btn copy-btn">Copy JSON</button>
       <a class="btn link-btn" href="#" data-open-console='{&quot;event&quot;:&quot;view_cart&quot;,&quot;event_type&quot;:&quot;event_ecomm_recommended&quot;,&quot;ecommerce&quot;:{&quot;currency&quot;:&quot;usd&quot;,&quot;value&quot;:12.24,&quot;items&quot;:[{&quot;item_id&quot;:48641234,&quot;item_name&quot;:&quot;sport-shoes&quot;,&quot;item_variant&quot;:&quot;blue&quot;,&quot;item_vendor&quot;:&quot;sport-products&quot;,&quot;price&quot;:12.24,&quot;quantity&quot;:1}]}}'>Log to Console</a>
+      <button data-payload='{&quot;event&quot;:&quot;view_cart&quot;,&quot;event_type&quot;:&quot;event_ecomm_recommended&quot;,&quot;ecommerce&quot;:{&quot;currency&quot;:&quot;usd&quot;,&quot;value&quot;:12.24,&quot;items&quot;:[{&quot;item_id&quot;:48641234,&quot;item_name&quot;:&quot;sport-shoes&quot;,&quot;item_variant&quot;:&quot;blue&quot;,&quot;item_vendor&quot;:&quot;sport-products&quot;,&quot;price&quot;:12.24,&quot;quantity&quot;:1}]}}' class="btn push-btn">Push Event</button>
     </div>
   </section>
 </article>
@@ -139,6 +356,7 @@
     <div class="actions">
       <button data-copy-target="json-cartjson-add_to_cart" class="btn copy-btn">Copy JSON</button>
       <a class="btn link-btn" href="#" data-open-console='{&quot;event&quot;:&quot;add_to_cart&quot;,&quot;event_type&quot;:&quot;event_ecomm_recommended&quot;,&quot;ecommerce&quot;:{&quot;currency&quot;:&quot;usd&quot;,&quot;value&quot;:12.24,&quot;items&quot;:[{&quot;item_id&quot;:48641234,&quot;item_name&quot;:&quot;sport-shoes&quot;,&quot;item_variant&quot;:&quot;blue&quot;,&quot;item_vendor&quot;:&quot;sport-products&quot;,&quot;price&quot;:12.24,&quot;quantity&quot;:1}]}}'>Log to Console</a>
+      <button data-payload='{&quot;event&quot;:&quot;add_to_cart&quot;,&quot;event_type&quot;:&quot;event_ecomm_recommended&quot;,&quot;ecommerce&quot;:{&quot;currency&quot;:&quot;usd&quot;,&quot;value&quot;:12.24,&quot;items&quot;:[{&quot;item_id&quot;:48641234,&quot;item_name&quot;:&quot;sport-shoes&quot;,&quot;item_variant&quot;:&quot;blue&quot;,&quot;item_vendor&quot;:&quot;sport-products&quot;,&quot;price&quot;:12.24,&quot;quantity&quot;:1}]}}' class="btn push-btn">Push Event</button>
     </div>
   </section>
 </article>
@@ -178,6 +396,7 @@
     <div class="actions">
       <button data-copy-target="json-cartjson-remove_from_cart" class="btn copy-btn">Copy JSON</button>
       <a class="btn link-btn" href="#" data-open-console='{&quot;event&quot;:&quot;remove_from_cart&quot;,&quot;event_type&quot;:&quot;event_ecomm_recommended&quot;,&quot;ecommerce&quot;:{&quot;currency&quot;:&quot;usd&quot;,&quot;value&quot;:12.24,&quot;items&quot;:[{&quot;item_id&quot;:48641234,&quot;item_name&quot;:&quot;sport-shoes&quot;,&quot;item_variant&quot;:&quot;blue&quot;,&quot;item_vendor&quot;:&quot;sport-products&quot;,&quot;price&quot;:12.24,&quot;quantity&quot;:1}]}}'>Log to Console</a>
+      <button data-payload='{&quot;event&quot;:&quot;remove_from_cart&quot;,&quot;event_type&quot;:&quot;event_ecomm_recommended&quot;,&quot;ecommerce&quot;:{&quot;currency&quot;:&quot;usd&quot;,&quot;value&quot;:12.24,&quot;items&quot;:[{&quot;item_id&quot;:48641234,&quot;item_name&quot;:&quot;sport-shoes&quot;,&quot;item_variant&quot;:&quot;blue&quot;,&quot;item_vendor&quot;:&quot;sport-products&quot;,&quot;price&quot;:12.24,&quot;quantity&quot;:1}]}}' class="btn push-btn">Push Event</button>
     </div>
   </section>
 </article>
@@ -192,7 +411,7 @@
   <p class="desc">An event triggered whenever a click happens.</p>
   <section class="section">
     <h3>Structure</h3>
-    <ul class="struct-list"><li><code>event</code>: <span class="val">click (string) </span></li><li><code>event_type</code>: <span class="val">event_custom (string) </span></li><li><code>custom_section</code>: <span class="val"> (string) </span></li><li><code>custom_type</code>: <span class="val"> (string) </span></li></ul>
+    <ul class="struct-list"><li><code>event</code>: <span class="val">click (string) </span></li><li><code>event_type</code>: <span class="val">event_custom (string) </span></li><li><code>custom_section</code>: <span class="val"> (string) </span></li><li><code>custom_type</code>: <span class="val"> (string) </span></li><li><code>custom_title</code>: <span class="val">empty (string) ✅ required</span></li></ul>
   </section>
   <section class="section">
     <h3>Example Payload</h3>
@@ -200,11 +419,13 @@
   &quot;event&quot;: &quot;click&quot;,
   &quot;event_type&quot;: &quot;event_custom&quot;,
   &quot;custom_section&quot;: &quot;&quot;,
-  &quot;custom_type&quot;: &quot;&quot;
+  &quot;custom_type&quot;: &quot;&quot;,
+  &quot;custom_title&quot;: &quot;&quot;
 }</pre>
     <div class="actions">
       <button data-copy-target="json-generaljson-click" class="btn copy-btn">Copy JSON</button>
-      <a class="btn link-btn" href="#" data-open-console='{&quot;event&quot;:&quot;click&quot;,&quot;event_type&quot;:&quot;event_custom&quot;,&quot;custom_section&quot;:&quot;&quot;,&quot;custom_type&quot;:&quot;&quot;}'>Log to Console</a>
+      <a class="btn link-btn" href="#" data-open-console='{&quot;event&quot;:&quot;click&quot;,&quot;event_type&quot;:&quot;event_custom&quot;,&quot;custom_section&quot;:&quot;&quot;,&quot;custom_type&quot;:&quot;&quot;,&quot;custom_title&quot;:&quot;&quot;}'>Log to Console</a>
+      <button data-payload='{&quot;event&quot;:&quot;click&quot;,&quot;event_type&quot;:&quot;event_custom&quot;,&quot;custom_section&quot;:&quot;&quot;,&quot;custom_type&quot;:&quot;&quot;,&quot;custom_title&quot;:&quot;&quot;}' class="btn push-btn">Push Event</button>
     </div>
   </section>
 </article>
@@ -243,6 +464,7 @@
     <div class="actions">
       <button data-copy-target="json-productjson-view_item" class="btn copy-btn">Copy JSON</button>
       <a class="btn link-btn" href="#" data-open-console='{&quot;event&quot;:&quot;view_item&quot;,&quot;event_type&quot;:&quot;event_ecomm_recommended&quot;,&quot;ecommerce&quot;:{&quot;currency&quot;:&quot;usd&quot;,&quot;value&quot;:19.47,&quot;items&quot;:[{&quot;item_id&quot;:3405127896,&quot;item_name&quot;:&quot;cool-hat&quot;,&quot;item_variant&quot;:&quot;black-white&quot;,&quot;item_vendor&quot;:&quot;hat-company&quot;,&quot;price&quot;:19.47}]}}'>Log to Console</a>
+      <button data-payload='{&quot;event&quot;:&quot;view_item&quot;,&quot;event_type&quot;:&quot;event_ecomm_recommended&quot;,&quot;ecommerce&quot;:{&quot;currency&quot;:&quot;usd&quot;,&quot;value&quot;:19.47,&quot;items&quot;:[{&quot;item_id&quot;:3405127896,&quot;item_name&quot;:&quot;cool-hat&quot;,&quot;item_variant&quot;:&quot;black-white&quot;,&quot;item_vendor&quot;:&quot;hat-company&quot;,&quot;price&quot;:19.47}]}}' class="btn push-btn">Push Event</button>
     </div>
   </section>
 </article>
@@ -257,7 +479,7 @@
   
   <section class="section">
     <h3>Structure</h3>
-    <ul class="struct-list"><li><code>event</code>: <span class="val">view_items (string) </span></li><li><code>event_type</code>: <span class="val">event_ecomm_recommended (string) </span></li><li><code>custom_title</code>: <span class="val"> (string) </span></li><li><code>ecommerce (Object)</code><ul class="struct-list"><li><code>currency</code>: <span class="val">usd (string) </span></li><li><code>items (Array)</code><ul class="struct-list"><ul class="struct-list"><li><code>item_name</code>: <span class="val"> (string) </span></li><li><code>item_variant</code>: <span class="val"> (string) </span></li><li><code>item_vendor</code>: <span class="val"> (string) </span></li></ul></ul></li></ul></li></ul>
+    <ul class="struct-list"><li><code>event</code>: <span class="val">view_items (string) </span></li><li><code>event_type</code>: <span class="val">event_ecomm_recommended (string) </span></li><li><code>custom_title</code>: <span class="val"> (string) </span></li><li><code>ecommerce (Object)</code><ul class="struct-list"><li><code>currency</code>: <span class="val">usd (string) </span></li><li><code>value</code>: <span class="val">empty (number) ✅ required</span></li><li><code>items (Array)</code><ul class="struct-list"><ul class="struct-list"><li><code>item_id</code>: <span class="val">empty (number) ✅ required</span></li><li><code>item_name</code>: <span class="val"> (string) </span></li><li><code>item_variant</code>: <span class="val"> (string) </span></li><li><code>item_vendor</code>: <span class="val"> (string) </span></li><li><code>price</code>: <span class="val">empty (number) ✅ required</span></li></ul></ul></li></ul></li></ul>
   </section>
   <section class="section">
     <h3>Example Payload</h3>
@@ -267,18 +489,22 @@
   &quot;custom_title&quot;: &quot;&quot;,
   &quot;ecommerce&quot;: {
     &quot;currency&quot;: &quot;usd&quot;,
+    &quot;value&quot;: &quot;&quot;,
     &quot;items&quot;: [
       {
+        &quot;item_id&quot;: &quot;&quot;,
         &quot;item_name&quot;: &quot;&quot;,
         &quot;item_variant&quot;: &quot;&quot;,
-        &quot;item_vendor&quot;: &quot;&quot;
+        &quot;item_vendor&quot;: &quot;&quot;,
+        &quot;price&quot;: &quot;&quot;
       }
     ]
   }
 }</pre>
     <div class="actions">
       <button data-copy-target="json-productjson-view_items" class="btn copy-btn">Copy JSON</button>
-      <a class="btn link-btn" href="#" data-open-console='{&quot;event&quot;:&quot;view_items&quot;,&quot;event_type&quot;:&quot;event_ecomm_recommended&quot;,&quot;custom_title&quot;:&quot;&quot;,&quot;ecommerce&quot;:{&quot;currency&quot;:&quot;usd&quot;,&quot;items&quot;:[{&quot;item_name&quot;:&quot;&quot;,&quot;item_variant&quot;:&quot;&quot;,&quot;item_vendor&quot;:&quot;&quot;}]}}'>Log to Console</a>
+      <a class="btn link-btn" href="#" data-open-console='{&quot;event&quot;:&quot;view_items&quot;,&quot;event_type&quot;:&quot;event_ecomm_recommended&quot;,&quot;custom_title&quot;:&quot;&quot;,&quot;ecommerce&quot;:{&quot;currency&quot;:&quot;usd&quot;,&quot;value&quot;:&quot;&quot;,&quot;items&quot;:[{&quot;item_id&quot;:&quot;&quot;,&quot;item_name&quot;:&quot;&quot;,&quot;item_variant&quot;:&quot;&quot;,&quot;item_vendor&quot;:&quot;&quot;,&quot;price&quot;:&quot;&quot;}]}}'>Log to Console</a>
+      <button data-payload='{&quot;event&quot;:&quot;view_items&quot;,&quot;event_type&quot;:&quot;event_ecomm_recommended&quot;,&quot;custom_title&quot;:&quot;&quot;,&quot;ecommerce&quot;:{&quot;currency&quot;:&quot;usd&quot;,&quot;value&quot;:&quot;&quot;,&quot;items&quot;:[{&quot;item_id&quot;:&quot;&quot;,&quot;item_name&quot;:&quot;&quot;,&quot;item_variant&quot;:&quot;&quot;,&quot;item_vendor&quot;:&quot;&quot;,&quot;price&quot;:&quot;&quot;}]}}' class="btn push-btn">Push Event</button>
     </div>
   </section>
 </article>
@@ -287,7 +513,7 @@
     </div>
 
     <footer>
-      Generated by Data Layer Manager — 06/11/2025, 00:40:29
+      Generated by Data Layer Manager — 06/11/2025, 02:00:12
     </footer>
   </div>
 
@@ -333,7 +559,7 @@
     if (!a) return ev.preventDefault();
     const json = JSON.parse(a.getAttribute('data-open-console'));
     console.log('Example payload:', json);
-    alert('Payload logged to console');
+    // alert('Payload logged to console');
   });
 
   // Smooth anchor scroll

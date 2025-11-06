@@ -1,4 +1,4 @@
-export default {
+const DATA_LAYER_MANAGER_CONFIG = {
   titles: {
     x: 'close',
   },
@@ -40,3 +40,5 @@ export default {
     pages: () => window.location.pathname.substring(1).replace(/\//g, '-'),
   },
 };
+
+export default DATA_LAYER_MANAGER_CONFIG;

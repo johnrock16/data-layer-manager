@@ -42,7 +42,9 @@ function fillEmptyFields(template, example = {}, simplifiedReturn = false) {
         if (eVal !== undefined) {
           res[key] = simplifiedReturn ? eVal : `${eVal} (${tVal?.type || typeof eVal}) ${tVal?.required ? '✅ required' : ''}`;
         } else if (tVal.default !== undefined) {
-          res[key] = simplifiedReturn ? tVal : `${tVal.default} (${tVal?.type || typeof tVal}) ${tVal?.required ? '✅ required' : ''}`;
+          res[key] = simplifiedReturn ? tVal : `${tVal.default} (${tVal?.type || typeof eVal}) ${tVal?.required ? '✅ required' : ''}`;
+        } else {
+          res[key] = simplifiedReturn ? '' : `empty (${tVal?.type || typeof eVal}) ${tVal?.required ? '✅ required' : ''}`
         }
       } else {
         res[key] = simplifiedReturn ? tVal : `${tVal} (${tVal?.type || typeof tVal}) ${tVal?.required ? '✅ required' : ''}`;
@@ -147,11 +149,18 @@ function buildHtmlPage(allTemplates) {
     <div class="actions">
       <button data-copy-target="json-${id}" class="btn copy-btn">Copy JSON</button>
       <a class="btn link-btn" href="#" data-open-console='${escapeHtml(JSON.stringify(structureExample))}'>Log to Console</a>
+      <button data-payload='${escapeHtml(JSON.stringify(structureExample))}' class="btn push-btn">Push Event</button>
     </div>
   </section>
 </article>\n`;
     }
   }
+
+
+  const scriptContent = fs.readFileSync('./src/dataLayerManager.js', 'utf8');
+  const scriptConfig = fs.readFileSync('./examples/vanilla/dataLayerManager.config.js', 'utf8');
+  const templateEvents = allTemplates.map((template) => template.events);
+  const templateEventsObject = Object.assign({}, ...templateEvents);
 
   const html = `<!doctype html>
 <html lang="en">
@@ -189,6 +198,7 @@ function buildHtmlPage(allTemplates) {
   .btn{border:0;padding:8px 12px;border-radius:6px;cursor:pointer;background:#0b5fff;color:#fff;font-size:13px;text-decoration:none;}
   .link-btn{background:#10b981}
   .copy-btn{background:#0b5fff}
+  .push-btn{background:#dc7c03}
   .source.small{font-size:12px;color:#6b7280}
   footer{margin-top:24px;color:#6b7280;font-size:13px}
   @media(max-width:900px){.layout{grid-template-columns:1fr}}
@@ -196,6 +206,31 @@ function buildHtmlPage(allTemplates) {
 </style>
 </head>
 <body>
+  <script type="module" defer>
+    ${scriptConfig}
+    window.DATA_LAYER_MANAGER_CONFIG = DATA_LAYER_MANAGER_CONFIG;
+  </script>
+  <script type="module" defer>
+    ${scriptContent}
+    window.DataLayerManager = DataLayerManager;
+  </script>
+  <script type="module" defer>
+    document.addEventListener('DOMContentLoaded', () => {
+      const templates = ${JSON.stringify(templateEventsObject)};
+      window.dataLayer = [];
+      window.dataLayerManager = new window.DataLayerManager(templates, window.DATA_LAYER_MANAGER_CONFIG);
+
+      const pushButtonElements = document.querySelectorAll('.push-btn');
+
+      pushButtonElements.forEach((pushButtonElement) => {
+        pushButtonElement.addEventListener('click', (event) => {
+          const payload = JSON.parse(event.target.getAttribute('data-payload'));
+          window.dataLayerManager.pushToDataLayer(payload.event, payload);
+          console.log(window.dataLayer)
+        });
+      });
+    });
+  </script>
   <div class="container">
     <header class="page-header">
       <h1>Data Layer Manager - Events Documentation</h1>
@@ -264,7 +299,7 @@ function buildHtmlPage(allTemplates) {
     if (!a) return ev.preventDefault();
     const json = JSON.parse(a.getAttribute('data-open-console'));
     console.log('Example payload:', json);
-    alert('Payload logged to console');
+    // alert('Payload logged to console');
   });
 
   // Smooth anchor scroll
