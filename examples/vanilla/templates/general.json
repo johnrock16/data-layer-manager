@@ -7,6 +7,9 @@
     "custom_title": {
       "required": true,
       "type": "string"
+    },
+    "docs": {
+      "description": "An event triggered whenever a click happens."
     }
   }
 }

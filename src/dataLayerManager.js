@@ -1,4 +1,4 @@
-const DataLayerManager = function (eventTemplate, googleTagManagerConfig) {
+const DataLayerManager = function (eventTemplate, googleTagManagerConfig, config = { test: false }) {
   const { titles: GTM_TITLES, types, tags, pages: PAGE_CODES, pathnames: LOCATION_PATHS } = googleTagManagerConfig;
 
   const GTM_EVENTS = eventTemplate;
@@ -111,7 +111,9 @@ const DataLayerManager = function (eventTemplate, googleTagManagerConfig) {
 
       return {ok: true , event: cleanedEvent};
     } catch (error) {
-      console.error(error);
+      if (!config.test) {
+        console.error(error);
+      }
       return {error: error};
     }
   };

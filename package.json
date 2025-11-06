@@ -5,7 +5,8 @@
   "main": "index.js",
   "type": "module",
   "bin": {
-    "generate-docs": "./bin/generate-docs.js"
+    "generate-docs": "./bin/generate-docs.js",
+    "generate-docs-html": "./bin/generate-docs-html.js"
   },
   "scripts": {
     "start": "node index.js",

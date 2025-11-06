@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Events Documentation</title>
+<style>
+  :root{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial; color:#222}
+  body{margin:0;padding:24px;background:#f7fafc}
+  .container{max-width:1100px;margin:0 auto}
+  header.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+  h1{margin:0;font-size:20px}
+  .search{margin-left:12px}
+  .layout{display:grid;grid-template-columns:320px 1fr;gap:20px}
+  nav.toc{background:#fff;padding:16px;border-radius:8px;box-shadow:0 1px 4px rgba(16,24,40,0.04)}
+  nav.toc h3{margin-top:0}
+  nav.toc ul{list-style:none;padding-left:0;margin:0;max-height:72vh;overflow:auto}
+  nav.toc li{margin:8px 0}
+  nav.toc a{color:#0b5fff;text-decoration:none}
+  main.content{min-height:60vh}
+  .event-card{background:#fff;padding:18px;border-radius:8px;margin-bottom:16px;box-shadow:0 1px 6px rgba(16,24,40,0.04)}
+  .event-header{display:flex;justify-content:space-between;align-items:flex-start}
+  .event-header h2{margin:0;font-size:16px}
+  .meta{display:flex;gap:8px;align-items:center}
+  .badge{background:#eef2ff;color:#1e3a8a;padding:4px 8px;border-radius:6px;font-size:12px}
+  .source code{background:#f3f4f6;padding:2px 6px;border-radius:4px;font-size:12px}
+  .desc{margin:12px 0 8px;color:#374151}
+  .section h3{margin:0 0 8px 0;font-size:14px}
+  .struct-list{margin:0 0 8px 0;padding-left:18px}
+  .struct-list li{margin:6px 0}
+  .struct-list .meta{color:#6b7280;font-size:12px;margin-left:6px}
+  .json-block{background:#0f172a;color:#e6eef8;padding:12px;border-radius:6px;overflow:auto}
+  .actions{margin-top:8px;display:flex;gap:8px}
+  .btn{border:0;padding:8px 12px;border-radius:6px;cursor:pointer;background:#0b5fff;color:#fff;font-size:13px;text-decoration:none;}
+  .link-btn{background:#10b981}
+  .copy-btn{background:#0b5fff}
+  .source.small{font-size:12px;color:#6b7280}
+  footer{margin-top:24px;color:#6b7280;font-size:13px}
+  @media(max-width:900px){.layout{grid-template-columns:1fr}}
+  .search-input{width:100%;padding:8px;border-radius:6px;border:1px solid #e5e7eb}
+</style>
+</head>
+<body>
+  <div class="container">
+    <header class="page-header">
+      <h1>Data Layer Manager - Events Documentation</h1>
+      <div>
+        <input id="search" class="search-input" placeholder="Search events or fields..." />
+      </div>
+    </header>
+
+    <div class="layout">
+      <nav class="toc" aria-label="table of contents">
+        <h3>Index</h3>
+        <ul id="toc-list">
+          <li><a href="#cartjson-view_cart">view_cart</a> <small class="source">(cart.json)</small></li>
+<li><a href="#cartjson-add_to_cart">add_to_cart</a> <small class="source">(cart.json)</small></li>
+<li><a href="#cartjson-remove_from_cart">remove_from_cart</a> <small class="source">(cart.json)</small></li>
+<li><a href="#generaljson-click">click</a> <small class="source">(general.json)</small></li>
+<li><a href="#productjson-view_item">view_item</a> <small class="source">(product.json)</small></li>
+<li><a href="#productjson-view_items">view_items</a> <small class="source">(product.json)</small></li>
+
+        </ul>
+      </nav>
+
+      <main class="content" id="content">
+        <article id="cartjson-view_cart" class="event-card">
+  <header class="event-header">
+    <h2>view_cart</h2>
+    <div class="meta">
+      <span class="badge">event_ecomm_recommended</span>
+      <span class="source">Source: <code>cart.json</code></span>
+    </div>
+  </header>
+  <p class="desc">An event triggered whenever the cart is viewed.</p>
+  <section class="section">
+    <h3>Structure</h3>
+    <ul class="struct-list"><li><code>event</code>: <span class="val">view_cart (string) </span></li><li><code>event_type</code>: <span class="val">event_ecomm_recommended (string) </span></li><li><code>ecommerce (Object)</code><ul class="struct-list"><li><code>currency</code>: <span class="val">usd (string) </span></li><li><code>value</code>: <span class="val">12.24 (number) ✅ required</span></li><li><code>items (Array)</code><ul class="struct-list"><ul class="struct-list"><li><code>item_id</code>: <span class="val">48641234 (number) ✅ required</span></li><li><code>item_name</code>: <span class="val">sport-shoes (string) </span></li><li><code>item_variant</code>: <span class="val">blue (string) </span></li><li><code>item_vendor</code>: <span class="val">sport-products (string) </span></li><li><code>price</code>: <span class="val">12.24 (number) ✅ required</span></li><li><code>quantity</code>: <span class="val">1 (number) ✅ required</span></li></ul></ul></li></ul></li></ul>
+  </section>
+  <section class="section">
+    <h3>Example Payload</h3>
+    <pre class="json-block" id="json-cartjson-view_cart">{
+  &quot;event&quot;: &quot;view_cart&quot;,
+  &quot;event_type&quot;: &quot;event_ecomm_recommended&quot;,
+  &quot;ecommerce&quot;: {
+    &quot;currency&quot;: &quot;usd&quot;,
+    &quot;value&quot;: 12.24,
+    &quot;items&quot;: [
+      {
+        &quot;item_id&quot;: 48641234,
+        &quot;item_name&quot;: &quot;sport-shoes&quot;,
+        &quot;item_variant&quot;: &quot;blue&quot;,
+        &quot;item_vendor&quot;: &quot;sport-products&quot;,
+        &quot;price&quot;: 12.24,
+        &quot;quantity&quot;: 1
+      }
+    ]
+  }
+}</pre>
+    <div class="actions">
+      <button data-copy-target="json-cartjson-view_cart" class="btn copy-btn">Copy JSON</button>
+      <a class="btn link-btn" href="#" data-open-console='{&quot;event&quot;:&quot;view_cart&quot;,&quot;event_type&quot;:&quot;event_ecomm_recommended&quot;,&quot;ecommerce&quot;:{&quot;currency&quot;:&quot;usd&quot;,&quot;value&quot;:12.24,&quot;items&quot;:[{&quot;item_id&quot;:48641234,&quot;item_name&quot;:&quot;sport-shoes&quot;,&quot;item_variant&quot;:&quot;blue&quot;,&quot;item_vendor&quot;:&quot;sport-products&quot;,&quot;price&quot;:12.24,&quot;quantity&quot;:1}]}}'>Log to Console</a>
+    </div>
+  </section>
+</article>
+<article id="cartjson-add_to_cart" class="event-card">
+  <header class="event-header">
+    <h2>add_to_cart</h2>
+    <div class="meta">
+      <span class="badge">event_ecomm_recommended</span>
+      <span class="source">Source: <code>cart.json</code></span>
+    </div>
+  </header>
+  <p class="desc">An event triggered whenever a item is added to cart.</p>
+  <section class="section">
+    <h3>Structure</h3>
+    <ul class="struct-list"><li><code>event</code>: <span class="val">add_to_cart (string) </span></li><li><code>event_type</code>: <span class="val">event_ecomm_recommended (string) </span></li><li><code>ecommerce (Object)</code><ul class="struct-list"><li><code>currency</code>: <span class="val">usd (string) </span></li><li><code>value</code>: <span class="val">12.24 (number) ✅ required</span></li><li><code>items (Array)</code><ul class="struct-list"><ul class="struct-list"><li><code>item_id</code>: <span class="val">48641234 (number) ✅ required</span></li><li><code>item_name</code>: <span class="val">sport-shoes (string) </span></li><li><code>item_variant</code>: <span class="val">blue (string) </span></li><li><code>item_vendor</code>: <span class="val">sport-products (string) </span></li><li><code>price</code>: <span class="val">12.24 (number) ✅ required</span></li><li><code>quantity</code>: <span class="val">1 (number) ✅ required</span></li></ul></ul></li></ul></li></ul>
+  </section>
+  <section class="section">
+    <h3>Example Payload</h3>
+    <pre class="json-block" id="json-cartjson-add_to_cart">{
+  &quot;event&quot;: &quot;add_to_cart&quot;,
+  &quot;event_type&quot;: &quot;event_ecomm_recommended&quot;,
+  &quot;ecommerce&quot;: {
+    &quot;currency&quot;: &quot;usd&quot;,
+    &quot;value&quot;: 12.24,
+    &quot;items&quot;: [
+      {
+        &quot;item_id&quot;: 48641234,
+        &quot;item_name&quot;: &quot;sport-shoes&quot;,
+        &quot;item_variant&quot;: &quot;blue&quot;,
+        &quot;item_vendor&quot;: &quot;sport-products&quot;,
+        &quot;price&quot;: 12.24,
+        &quot;quantity&quot;: 1
+      }
+    ]
+  }
+}</pre>
+    <div class="actions">
+      <button data-copy-target="json-cartjson-add_to_cart" class="btn copy-btn">Copy JSON</button>
+      <a class="btn link-btn" href="#" data-open-console='{&quot;event&quot;:&quot;add_to_cart&quot;,&quot;event_type&quot;:&quot;event_ecomm_recommended&quot;,&quot;ecommerce&quot;:{&quot;currency&quot;:&quot;usd&quot;,&quot;value&quot;:12.24,&quot;items&quot;:[{&quot;item_id&quot;:48641234,&quot;item_name&quot;:&quot;sport-shoes&quot;,&quot;item_variant&quot;:&quot;blue&quot;,&quot;item_vendor&quot;:&quot;sport-products&quot;,&quot;price&quot;:12.24,&quot;quantity&quot;:1}]}}'>Log to Console</a>
+    </div>
+  </section>
+</article>
+<article id="cartjson-remove_from_cart" class="event-card">
+  <header class="event-header">
+    <h2>remove_from_cart</h2>
+    <div class="meta">
+      <span class="badge">event_ecomm_recommended</span>
+      <span class="source">Source: <code>cart.json</code></span>
+    </div>
+  </header>
+  <p class="desc">An event triggered whenever a item is removed to cart.</p>
+  <section class="section">
+    <h3>Structure</h3>
+    <ul class="struct-list"><li><code>event</code>: <span class="val">remove_from_cart (string) </span></li><li><code>event_type</code>: <span class="val">event_ecomm_recommended (string) </span></li><li><code>ecommerce (Object)</code><ul class="struct-list"><li><code>currency</code>: <span class="val">usd (string) </span></li><li><code>value</code>: <span class="val">12.24 (number) ✅ required</span></li><li><code>items (Array)</code><ul class="struct-list"><ul class="struct-list"><li><code>item_id</code>: <span class="val">48641234 (number) ✅ required</span></li><li><code>item_name</code>: <span class="val">sport-shoes (string) </span></li><li><code>item_variant</code>: <span class="val">blue (string) </span></li><li><code>item_vendor</code>: <span class="val">sport-products (string) </span></li><li><code>price</code>: <span class="val">12.24 (number) ✅ required</span></li><li><code>quantity</code>: <span class="val">1 (number) ✅ required</span></li></ul></ul></li></ul></li></ul>
+  </section>
+  <section class="section">
+    <h3>Example Payload</h3>
+    <pre class="json-block" id="json-cartjson-remove_from_cart">{
+  &quot;event&quot;: &quot;remove_from_cart&quot;,
+  &quot;event_type&quot;: &quot;event_ecomm_recommended&quot;,
+  &quot;ecommerce&quot;: {
+    &quot;currency&quot;: &quot;usd&quot;,
+    &quot;value&quot;: 12.24,
+    &quot;items&quot;: [
+      {
+        &quot;item_id&quot;: 48641234,
+        &quot;item_name&quot;: &quot;sport-shoes&quot;,
+        &quot;item_variant&quot;: &quot;blue&quot;,
+        &quot;item_vendor&quot;: &quot;sport-products&quot;,
+        &quot;price&quot;: 12.24,
+        &quot;quantity&quot;: 1
+      }
+    ]
+  }
+}</pre>
+    <div class="actions">
+      <button data-copy-target="json-cartjson-remove_from_cart" class="btn copy-btn">Copy JSON</button>
+      <a class="btn link-btn" href="#" data-open-console='{&quot;event&quot;:&quot;remove_from_cart&quot;,&quot;event_type&quot;:&quot;event_ecomm_recommended&quot;,&quot;ecommerce&quot;:{&quot;currency&quot;:&quot;usd&quot;,&quot;value&quot;:12.24,&quot;items&quot;:[{&quot;item_id&quot;:48641234,&quot;item_name&quot;:&quot;sport-shoes&quot;,&quot;item_variant&quot;:&quot;blue&quot;,&quot;item_vendor&quot;:&quot;sport-products&quot;,&quot;price&quot;:12.24,&quot;quantity&quot;:1}]}}'>Log to Console</a>
+    </div>
+  </section>
+</article>
+<article id="generaljson-click" class="event-card">
+  <header class="event-header">
+    <h2>click</h2>
+    <div class="meta">
+      <span class="badge">event_custom</span>
+      <span class="source">Source: <code>general.json</code></span>
+    </div>
+  </header>
+  <p class="desc">An event triggered whenever a click happens.</p>
+  <section class="section">
+    <h3>Structure</h3>
+    <ul class="struct-list"><li><code>event</code>: <span class="val">click (string) </span></li><li><code>event_type</code>: <span class="val">event_custom (string) </span></li><li><code>custom_section</code>: <span class="val"> (string) </span></li><li><code>custom_type</code>: <span class="val"> (string) </span></li></ul>
+  </section>
+  <section class="section">
+    <h3>Example Payload</h3>
+    <pre class="json-block" id="json-generaljson-click">{
+  &quot;event&quot;: &quot;click&quot;,
+  &quot;event_type&quot;: &quot;event_custom&quot;,
+  &quot;custom_section&quot;: &quot;&quot;,
+  &quot;custom_type&quot;: &quot;&quot;
+}</pre>
+    <div class="actions">
+      <button data-copy-target="json-generaljson-click" class="btn copy-btn">Copy JSON</button>
+      <a class="btn link-btn" href="#" data-open-console='{&quot;event&quot;:&quot;click&quot;,&quot;event_type&quot;:&quot;event_custom&quot;,&quot;custom_section&quot;:&quot;&quot;,&quot;custom_type&quot;:&quot;&quot;}'>Log to Console</a>
+    </div>
+  </section>
+</article>
+<article id="productjson-view_item" class="event-card">
+  <header class="event-header">
+    <h2>view_item</h2>
+    <div class="meta">
+      <span class="badge">event_ecomm_recommended</span>
+      <span class="source">Source: <code>product.json</code></span>
+    </div>
+  </header>
+  <p class="desc">An event triggered whenever the product is viewed.</p>
+  <section class="section">
+    <h3>Structure</h3>
+    <ul class="struct-list"><li><code>event</code>: <span class="val">view_item (string) </span></li><li><code>event_type</code>: <span class="val">event_ecomm_recommended (string) </span></li><li><code>ecommerce (Object)</code><ul class="struct-list"><li><code>currency</code>: <span class="val">usd (string) </span></li><li><code>value</code>: <span class="val">19.47 (number) ✅ required</span></li><li><code>items (Array)</code><ul class="struct-list"><ul class="struct-list"><li><code>item_id</code>: <span class="val">3405127896 (number) ✅ required</span></li><li><code>item_name</code>: <span class="val">cool-hat (string) </span></li><li><code>item_variant</code>: <span class="val">black-white (string) </span></li><li><code>item_vendor</code>: <span class="val">hat-company (string) </span></li><li><code>price</code>: <span class="val">19.47 (number) ✅ required</span></li></ul></ul></li></ul></li></ul>
+  </section>
+  <section class="section">
+    <h3>Example Payload</h3>
+    <pre class="json-block" id="json-productjson-view_item">{
+  &quot;event&quot;: &quot;view_item&quot;,
+  &quot;event_type&quot;: &quot;event_ecomm_recommended&quot;,
+  &quot;ecommerce&quot;: {
+    &quot;currency&quot;: &quot;usd&quot;,
+    &quot;value&quot;: 19.47,
+    &quot;items&quot;: [
+      {
+        &quot;item_id&quot;: 3405127896,
+        &quot;item_name&quot;: &quot;cool-hat&quot;,
+        &quot;item_variant&quot;: &quot;black-white&quot;,
+        &quot;item_vendor&quot;: &quot;hat-company&quot;,
+        &quot;price&quot;: 19.47
+      }
+    ]
+  }
+}</pre>
+    <div class="actions">
+      <button data-copy-target="json-productjson-view_item" class="btn copy-btn">Copy JSON</button>
+      <a class="btn link-btn" href="#" data-open-console='{&quot;event&quot;:&quot;view_item&quot;,&quot;event_type&quot;:&quot;event_ecomm_recommended&quot;,&quot;ecommerce&quot;:{&quot;currency&quot;:&quot;usd&quot;,&quot;value&quot;:19.47,&quot;items&quot;:[{&quot;item_id&quot;:3405127896,&quot;item_name&quot;:&quot;cool-hat&quot;,&quot;item_variant&quot;:&quot;black-white&quot;,&quot;item_vendor&quot;:&quot;hat-company&quot;,&quot;price&quot;:19.47}]}}'>Log to Console</a>
+    </div>
+  </section>
+</article>
+<article id="productjson-view_items" class="event-card">
+  <header class="event-header">
+    <h2>view_items</h2>
+    <div class="meta">
+      <span class="badge">event_ecomm_recommended</span>
+      <span class="source">Source: <code>product.json</code></span>
+    </div>
+  </header>
+  
+  <section class="section">
+    <h3>Structure</h3>
+    <ul class="struct-list"><li><code>event</code>: <span class="val">view_items (string) </span></li><li><code>event_type</code>: <span class="val">event_ecomm_recommended (string) </span></li><li><code>custom_title</code>: <span class="val"> (string) </span></li><li><code>ecommerce (Object)</code><ul class="struct-list"><li><code>currency</code>: <span class="val">usd (string) </span></li><li><code>items (Array)</code><ul class="struct-list"><ul class="struct-list"><li><code>item_name</code>: <span class="val"> (string) </span></li><li><code>item_variant</code>: <span class="val"> (string) </span></li><li><code>item_vendor</code>: <span class="val"> (string) </span></li></ul></ul></li></ul></li></ul>
+  </section>
+  <section class="section">
+    <h3>Example Payload</h3>
+    <pre class="json-block" id="json-productjson-view_items">{
+  &quot;event&quot;: &quot;view_items&quot;,
+  &quot;event_type&quot;: &quot;event_ecomm_recommended&quot;,
+  &quot;custom_title&quot;: &quot;&quot;,
+  &quot;ecommerce&quot;: {
+    &quot;currency&quot;: &quot;usd&quot;,
+    &quot;items&quot;: [
+      {
+        &quot;item_name&quot;: &quot;&quot;,
+        &quot;item_variant&quot;: &quot;&quot;,
+        &quot;item_vendor&quot;: &quot;&quot;
+      }
+    ]
+  }
+}</pre>
+    <div class="actions">
+      <button data-copy-target="json-productjson-view_items" class="btn copy-btn">Copy JSON</button>
+      <a class="btn link-btn" href="#" data-open-console='{&quot;event&quot;:&quot;view_items&quot;,&quot;event_type&quot;:&quot;event_ecomm_recommended&quot;,&quot;custom_title&quot;:&quot;&quot;,&quot;ecommerce&quot;:{&quot;currency&quot;:&quot;usd&quot;,&quot;items&quot;:[{&quot;item_name&quot;:&quot;&quot;,&quot;item_variant&quot;:&quot;&quot;,&quot;item_vendor&quot;:&quot;&quot;}]}}'>Log to Console</a>
+    </div>
+  </section>
+</article>
+
+      </main>
+    </div>
+
+    <footer>
+      Generated by Data Layer Manager — 06/11/2025, 00:40:29
+    </footer>
+  </div>
+
+<script>
+  // Search/filter
+  const searchInput = document.getElementById('search');
+  searchInput.addEventListener('input', (e) => {
+    const q = e.target.value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.event-card');
+    cards.forEach(card => {
+      const text = card.innerText.toLowerCase();
+      if (!q || text.includes(q)) card.style.display = '';
+      else card.style.display = 'none';
+    });
+    // also hide toc entries not matching
+    const tocItems = document.querySelectorAll('#toc-list li');
+    tocItems.forEach(li => {
+      const t = li.innerText.toLowerCase();
+      li.style.display = (!q || t.includes(q)) ? '' : 'none';
+    });
+  });
+
+  // Copy JSON button
+  document.body.addEventListener('click', (ev) => {
+    const btn = ev.target.closest('button.copy-btn');
+    if (!btn) return;
+    const targetId = btn.getAttribute('data-copy-target');
+    const el = document.getElementById(targetId);
+    if (!el) return;
+    const text = el.innerText;
+    navigator.clipboard?.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      setTimeout(()=> btn.textContent = 'Copy JSON', 1200);
+    }).catch(()=> {
+      btn.textContent = 'Copy failed';
+      setTimeout(()=> btn.textContent = 'Copy JSON', 1200);
+    });
+  });
+
+  // Open to console (logs example)
+  document.body.addEventListener('click', (ev) => {
+    const a = ev.target.closest('a[data-open-console]');
+    if (!a) return ev.preventDefault();
+    const json = JSON.parse(a.getAttribute('data-open-console'));
+    console.log('Example payload:', json);
+    alert('Payload logged to console');
+  });
+
+  // Smooth anchor scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const href = a.getAttribute('href');
+      if (href.length > 1) {
+        e.preventDefault();
+        const el = document.querySelector(href);
+        if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    });
+  });
+</script>
+</body>
+</html>
