@@ -43,6 +43,8 @@ function fillEmptyFields(template, example = {}, simplifiedReturn = false) {
           res[key] = simplifiedReturn ? eVal : `${eVal} (${tVal?.type || typeof eVal}) ${tVal?.required ? '✅ required' : ''}`;
         } else if (tVal.default !== undefined) {
           res[key] = simplifiedReturn ? tVal : `${tVal.default} (${tVal?.type || typeof tVal}) ${tVal?.required ? '✅ required' : ''}`;
+        } else {
+          res[key] = simplifiedReturn ? '' : `(${tVal?.type || typeof eVal}) ${tVal?.required ? '✅ required' : ''}`
         }
       } else {
         res[key] = simplifiedReturn ? tVal : `${tVal} (${tVal?.type || typeof tVal}) ${tVal?.required ? '✅ required' : ''}`;

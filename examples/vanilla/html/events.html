@@ -192,7 +192,7 @@
   <p class="desc">An event triggered whenever a click happens.</p>
   <section class="section">
     <h3>Structure</h3>
-    <ul class="struct-list"><li><code>event</code>: <span class="val">click (string) </span></li><li><code>event_type</code>: <span class="val">event_custom (string) </span></li><li><code>custom_section</code>: <span class="val"> (string) </span></li><li><code>custom_type</code>: <span class="val"> (string) </span></li></ul>
+    <ul class="struct-list"><li><code>event</code>: <span class="val">click (string) </span></li><li><code>event_type</code>: <span class="val">event_custom (string) </span></li><li><code>custom_section</code>: <span class="val"> (string) </span></li><li><code>custom_type</code>: <span class="val"> (string) </span></li><li><code>custom_title</code>: <span class="val">(string) ✅ required</span></li></ul>
   </section>
   <section class="section">
     <h3>Example Payload</h3>
@@ -200,11 +200,12 @@
   &quot;event&quot;: &quot;click&quot;,
   &quot;event_type&quot;: &quot;event_custom&quot;,
   &quot;custom_section&quot;: &quot;&quot;,
-  &quot;custom_type&quot;: &quot;&quot;
+  &quot;custom_type&quot;: &quot;&quot;,
+  &quot;custom_title&quot;: &quot;&quot;
 }</pre>
     <div class="actions">
       <button data-copy-target="json-generaljson-click" class="btn copy-btn">Copy JSON</button>
-      <a class="btn link-btn" href="#" data-open-console='{&quot;event&quot;:&quot;click&quot;,&quot;event_type&quot;:&quot;event_custom&quot;,&quot;custom_section&quot;:&quot;&quot;,&quot;custom_type&quot;:&quot;&quot;}'>Log to Console</a>
+      <a class="btn link-btn" href="#" data-open-console='{&quot;event&quot;:&quot;click&quot;,&quot;event_type&quot;:&quot;event_custom&quot;,&quot;custom_section&quot;:&quot;&quot;,&quot;custom_type&quot;:&quot;&quot;,&quot;custom_title&quot;:&quot;&quot;}'>Log to Console</a>
     </div>
   </section>
 </article>
@@ -257,7 +258,7 @@
   
   <section class="section">
     <h3>Structure</h3>
-    <ul class="struct-list"><li><code>event</code>: <span class="val">view_items (string) </span></li><li><code>event_type</code>: <span class="val">event_ecomm_recommended (string) </span></li><li><code>custom_title</code>: <span class="val"> (string) </span></li><li><code>ecommerce (Object)</code><ul class="struct-list"><li><code>currency</code>: <span class="val">usd (string) </span></li><li><code>items (Array)</code><ul class="struct-list"><ul class="struct-list"><li><code>item_name</code>: <span class="val"> (string) </span></li><li><code>item_variant</code>: <span class="val"> (string) </span></li><li><code>item_vendor</code>: <span class="val"> (string) </span></li></ul></ul></li></ul></li></ul>
+    <ul class="struct-list"><li><code>event</code>: <span class="val">view_items (string) </span></li><li><code>event_type</code>: <span class="val">event_ecomm_recommended (string) </span></li><li><code>custom_title</code>: <span class="val"> (string) </span></li><li><code>ecommerce (Object)</code><ul class="struct-list"><li><code>currency</code>: <span class="val">usd (string) </span></li><li><code>value</code>: <span class="val">(number) ✅ required</span></li><li><code>items (Array)</code><ul class="struct-list"><ul class="struct-list"><li><code>item_id</code>: <span class="val">(number) ✅ required</span></li><li><code>item_name</code>: <span class="val"> (string) </span></li><li><code>item_variant</code>: <span class="val"> (string) </span></li><li><code>item_vendor</code>: <span class="val"> (string) </span></li><li><code>price</code>: <span class="val">(number) ✅ required</span></li></ul></ul></li></ul></li></ul>
   </section>
   <section class="section">
     <h3>Example Payload</h3>
@@ -267,18 +268,21 @@
   &quot;custom_title&quot;: &quot;&quot;,
   &quot;ecommerce&quot;: {
     &quot;currency&quot;: &quot;usd&quot;,
+    &quot;value&quot;: &quot;&quot;,
     &quot;items&quot;: [
       {
+        &quot;item_id&quot;: &quot;&quot;,
         &quot;item_name&quot;: &quot;&quot;,
         &quot;item_variant&quot;: &quot;&quot;,
-        &quot;item_vendor&quot;: &quot;&quot;
+        &quot;item_vendor&quot;: &quot;&quot;,
+        &quot;price&quot;: &quot;&quot;
       }
     ]
   }
 }</pre>
     <div class="actions">
       <button data-copy-target="json-productjson-view_items" class="btn copy-btn">Copy JSON</button>
-      <a class="btn link-btn" href="#" data-open-console='{&quot;event&quot;:&quot;view_items&quot;,&quot;event_type&quot;:&quot;event_ecomm_recommended&quot;,&quot;custom_title&quot;:&quot;&quot;,&quot;ecommerce&quot;:{&quot;currency&quot;:&quot;usd&quot;,&quot;items&quot;:[{&quot;item_name&quot;:&quot;&quot;,&quot;item_variant&quot;:&quot;&quot;,&quot;item_vendor&quot;:&quot;&quot;}]}}'>Log to Console</a>
+      <a class="btn link-btn" href="#" data-open-console='{&quot;event&quot;:&quot;view_items&quot;,&quot;event_type&quot;:&quot;event_ecomm_recommended&quot;,&quot;custom_title&quot;:&quot;&quot;,&quot;ecommerce&quot;:{&quot;currency&quot;:&quot;usd&quot;,&quot;value&quot;:&quot;&quot;,&quot;items&quot;:[{&quot;item_id&quot;:&quot;&quot;,&quot;item_name&quot;:&quot;&quot;,&quot;item_variant&quot;:&quot;&quot;,&quot;item_vendor&quot;:&quot;&quot;,&quot;price&quot;:&quot;&quot;}]}}'>Log to Console</a>
     </div>
   </section>
 </article>
@@ -287,7 +291,7 @@
     </div>
 
     <footer>
-      Generated by Data Layer Manager — 06/11/2025, 00:40:29
+      Generated by Data Layer Manager — 06/11/2025, 02:03:54
     </footer>
   </div>
 
