@@ -114,7 +114,7 @@ function escapeHtml(str) {
 /**
  * Build the full HTML page
  */
-function buildHtmlPage(allTemplates) {
+function buildHtmlPage(allTemplates, configPathString = '') {
   // allTemplates => array of { fileName, events: { eventName: eventObj } }
   let tocHtml = '';
   let bodyHtml = '';
@@ -156,11 +156,51 @@ function buildHtmlPage(allTemplates) {
     }
   }
 
+  let scriptContent = '';
+  let scriptConfig = '';
+  let templateEvents = [];
+  let templateEventsObject = null;
 
-  const scriptContent = fs.readFileSync('./src/dataLayerManager.js', 'utf8');
-  const scriptConfig = fs.readFileSync('./examples/vanilla/dataLayerManager.config.js', 'utf8');
-  const templateEvents = allTemplates.map((template) => template.events);
-  const templateEventsObject = Object.assign({}, ...templateEvents);
+  if (configPathString) {
+    scriptContent = fs.readFileSync('./src/dataLayerManager.js', 'utf8');
+    scriptConfig = fs.readFileSync(configPathString, 'utf8');
+    templateEvents = allTemplates.map((template) => template.events);
+    templateEventsObject = Object.assign({}, ...templateEvents);
+  }
+
+  let scriptConfigModule = scriptConfig ? `
+    <script type="module" defer>
+      ${scriptConfig}
+      window.DATA_LAYER_MANAGER_CONFIG = DATA_LAYER_MANAGER_CONFIG;
+    </script>
+  ` : '';
+
+  let scriptDataLayerModule = scriptContent ? `
+    <script type="module" defer>
+      ${scriptContent}
+      window.DataLayerManager = DataLayerManager;
+    </script>
+  ` : '';
+
+  let scriptPushModule = templateEventsObject && scriptConfig && scriptContent ? `
+    <script type="module" defer>
+      document.addEventListener('DOMContentLoaded', () => {
+        const templates = ${JSON.stringify(templateEventsObject)};
+        window.dataLayer = [];
+        window.dataLayerManager = new window.DataLayerManager(templates, window.DATA_LAYER_MANAGER_CONFIG);
+
+        const pushButtonElements = document.querySelectorAll('.push-btn');
+
+        pushButtonElements.forEach((pushButtonElement) => {
+          pushButtonElement.addEventListener('click', (event) => {
+            const payload = JSON.parse(event.target.getAttribute('data-payload'));
+            window.dataLayerManager.pushToDataLayer(payload.event, payload);
+            console.log(window.dataLayer)
+          });
+        });
+      });
+    </script>
+  ` : '';
 
   const html = `<!doctype html>
 <html lang="en">
@@ -206,31 +246,9 @@ function buildHtmlPage(allTemplates) {
 </style>
 </head>
 <body>
-  <script type="module" defer>
-    ${scriptConfig}
-    window.DATA_LAYER_MANAGER_CONFIG = DATA_LAYER_MANAGER_CONFIG;
-  </script>
-  <script type="module" defer>
-    ${scriptContent}
-    window.DataLayerManager = DataLayerManager;
-  </script>
-  <script type="module" defer>
-    document.addEventListener('DOMContentLoaded', () => {
-      const templates = ${JSON.stringify(templateEventsObject)};
-      window.dataLayer = [];
-      window.dataLayerManager = new window.DataLayerManager(templates, window.DATA_LAYER_MANAGER_CONFIG);
-
-      const pushButtonElements = document.querySelectorAll('.push-btn');
-
-      pushButtonElements.forEach((pushButtonElement) => {
-        pushButtonElement.addEventListener('click', (event) => {
-          const payload = JSON.parse(event.target.getAttribute('data-payload'));
-          window.dataLayerManager.pushToDataLayer(payload.event, payload);
-          console.log(window.dataLayer)
-        });
-      });
-    });
-  </script>
+  ${scriptConfigModule}
+  ${scriptDataLayerModule}
+  ${scriptPushModule}
   <div class="container">
     <header class="page-header">
       <h1>Data Layer Manager - Events Documentation</h1>
@@ -326,7 +344,7 @@ function buildHtmlPage(allTemplates) {
 function main() {
   const args = process.argv.slice(2);
   if (args.length === 0) {
-    console.log('Usage: node scripts/generate-html-docs.js <templates-folder> [--out ./docs/events.html]');
+    console.log('Usage: node scripts/generate-html-docs.js <templates-folder> [--out ./docs/events.html] [--config ./config.js]');
     process.exit(1);
   }
 
@@ -342,9 +360,21 @@ function main() {
   if (outIndex !== -1 && args[outIndex + 1]) {
     outPath = path.resolve(args[outIndex + 1]);
   } else {
-    // ensure docs folder exists
     const docDir = path.dirname(outPath);
     if (!fs.existsSync(docDir)) fs.mkdirSync(docDir, { recursive: true });
+  }
+
+  // find optional --config flag
+  const configIndex = args.indexOf('--config');
+  let configPathString = '';
+  if (configIndex !== -1 && args[configIndex + 1]) {
+    const configPath = path.resolve(args[configIndex + 1]);
+    if (fs.existsSync(configPath)) {
+      configPathString = configPath;
+      console.log('✅ Loaded config from', configPath);
+    } else {
+      console.warn('⚠️  Config file not found:', configPath);
+    }
   }
 
   const files = fs.readdirSync(templatesDir).filter(f => f.endsWith('.json'));
@@ -365,7 +395,7 @@ function main() {
     }
   }
 
-  const html = buildHtmlPage(allTemplates);
+  const html = buildHtmlPage(allTemplates, configPathString); // pass config if needed later
   fs.writeFileSync(outPath, html, 'utf-8');
   console.log('✅ HTML documentation generated at', outPath);
 }

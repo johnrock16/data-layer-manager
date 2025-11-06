@@ -42,8 +42,9 @@
 </style>
 </head>
 <body>
-  <script type="module" defer>
-    const DATA_LAYER_MANAGER_CONFIG = {
+  
+    <script type="module" defer>
+      const DATA_LAYER_MANAGER_CONFIG = {
   titles: {
     x: 'close',
   },
@@ -88,10 +89,12 @@
 
 export default DATA_LAYER_MANAGER_CONFIG;
 
-    window.DATA_LAYER_MANAGER_CONFIG = DATA_LAYER_MANAGER_CONFIG;
-  </script>
-  <script type="module" defer>
-    const DataLayerManager = function (eventTemplate, googleTagManagerConfig, config = { test: false }) {
+      window.DATA_LAYER_MANAGER_CONFIG = DATA_LAYER_MANAGER_CONFIG;
+    </script>
+  
+  
+    <script type="module" defer>
+      const DataLayerManager = function (eventTemplate, googleTagManagerConfig, config = { test: false }) {
   const { titles: GTM_TITLES, types, tags, pages: PAGE_CODES, pathnames: LOCATION_PATHS } = googleTagManagerConfig;
 
   const GTM_EVENTS = eventTemplate;
@@ -238,25 +241,28 @@ export default DATA_LAYER_MANAGER_CONFIG;
 
 export default DataLayerManager;
 
-    window.DataLayerManager = DataLayerManager;
-  </script>
-  <script type="module" defer>
-    document.addEventListener('DOMContentLoaded', () => {
-      const templates = {"view_cart":{"event":"view_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"required":true,"type":"number"},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"},"quantity":{"required":true,"type":"number"}}]},"docs":{"description":"An event triggered whenever the cart is viewed.","structureExpected":{"event":"view_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":12.24,"items":[{"item_id":48641234,"item_name":"sport-shoes","item_variant":"blue","item_vendor":"sport-products","price":12.24,"quantity":1}]}}}},"add_to_cart":{"event":"add_to_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"required":true,"type":"number"},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"},"quantity":{"required":true,"type":"number"}}]},"docs":{"description":"An event triggered whenever a item is added to cart.","structureExpected":{"event":"add_to_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":12.24,"items":[{"item_id":48641234,"item_name":"sport-shoes","item_variant":"blue","item_vendor":"sport-products","price":12.24,"quantity":1}]}}}},"remove_from_cart":{"event":"remove_from_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"required":true,"type":"number"},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"},"quantity":{"required":true,"type":"number"}}]},"docs":{"description":"An event triggered whenever a item is removed to cart.","structureExpected":{"event":"remove_from_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":12.24,"items":[{"item_id":48641234,"item_name":"sport-shoes","item_variant":"blue","item_vendor":"sport-products","price":12.24,"quantity":1}]}}}},"click":{"event":"click","event_type":"event_custom","custom_section":"","custom_type":"","custom_title":{"required":true,"type":"string"},"docs":{"description":"An event triggered whenever a click happens."}},"view_item":{"event":"view_item","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"type":"number","required":true},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"}}]},"docs":{"description":"An event triggered whenever the product is viewed.","structureExpected":{"event":"view_item","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":19.47,"items":[{"item_id":3405127896,"item_name":"cool-hat","item_variant":"black-white","item_vendor":"hat-company","price":19.47}]}}}},"view_items":{"event":"view_items","event_type":"event_ecomm_recommended","custom_title":"","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"type":"number","required":true},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"}}]}}};
-      window.dataLayer = [];
-      window.dataLayerManager = new window.DataLayerManager(templates, window.DATA_LAYER_MANAGER_CONFIG);
+      window.DataLayerManager = DataLayerManager;
+    </script>
+  
+  
+    <script type="module" defer>
+      document.addEventListener('DOMContentLoaded', () => {
+        const templates = {"view_cart":{"event":"view_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"required":true,"type":"number"},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"},"quantity":{"required":true,"type":"number"}}]},"docs":{"description":"An event triggered whenever the cart is viewed.","structureExpected":{"event":"view_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":12.24,"items":[{"item_id":48641234,"item_name":"sport-shoes","item_variant":"blue","item_vendor":"sport-products","price":12.24,"quantity":1}]}}}},"add_to_cart":{"event":"add_to_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"required":true,"type":"number"},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"},"quantity":{"required":true,"type":"number"}}]},"docs":{"description":"An event triggered whenever a item is added to cart.","structureExpected":{"event":"add_to_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":12.24,"items":[{"item_id":48641234,"item_name":"sport-shoes","item_variant":"blue","item_vendor":"sport-products","price":12.24,"quantity":1}]}}}},"remove_from_cart":{"event":"remove_from_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"required":true,"type":"number"},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"},"quantity":{"required":true,"type":"number"}}]},"docs":{"description":"An event triggered whenever a item is removed to cart.","structureExpected":{"event":"remove_from_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":12.24,"items":[{"item_id":48641234,"item_name":"sport-shoes","item_variant":"blue","item_vendor":"sport-products","price":12.24,"quantity":1}]}}}},"click":{"event":"click","event_type":"event_custom","custom_section":"","custom_type":"","custom_title":{"required":true,"type":"string"},"docs":{"description":"An event triggered whenever a click happens."}},"view_item":{"event":"view_item","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"type":"number","required":true},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"}}]},"docs":{"description":"An event triggered whenever the product is viewed.","structureExpected":{"event":"view_item","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":19.47,"items":[{"item_id":3405127896,"item_name":"cool-hat","item_variant":"black-white","item_vendor":"hat-company","price":19.47}]}}}},"view_items":{"event":"view_items","event_type":"event_ecomm_recommended","custom_title":"","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"type":"number","required":true},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"}}]}}};
+        window.dataLayer = [];
+        window.dataLayerManager = new window.DataLayerManager(templates, window.DATA_LAYER_MANAGER_CONFIG);
 
-      const pushButtonElements = document.querySelectorAll('.push-btn');
+        const pushButtonElements = document.querySelectorAll('.push-btn');
 
-      pushButtonElements.forEach((pushButtonElement) => {
-        pushButtonElement.addEventListener('click', (event) => {
-          const payload = JSON.parse(event.target.getAttribute('data-payload'));
-          window.dataLayerManager.pushToDataLayer(payload.event, payload);
-          console.log(window.dataLayer)
+        pushButtonElements.forEach((pushButtonElement) => {
+          pushButtonElement.addEventListener('click', (event) => {
+            const payload = JSON.parse(event.target.getAttribute('data-payload'));
+            window.dataLayerManager.pushToDataLayer(payload.event, payload);
+            console.log(window.dataLayer)
+          });
         });
       });
-    });
-  </script>
+    </script>
+  
   <div class="container">
     <header class="page-header">
       <h1>Data Layer Manager - Events Documentation</h1>
@@ -513,7 +519,7 @@ export default DataLayerManager;
     </div>
 
     <footer>
-      Generated by Data Layer Manager — 06/11/2025, 04:08:29
+      Generated by Data Layer Manager — 06/11/2025, 04:48:16
     </footer>
   </div>
 
