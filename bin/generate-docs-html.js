@@ -36,15 +36,15 @@ function fillEmptyFields(template, example = {}, simplifiedReturn = false) {
         // nested structure (not schema leaf)
         res[key] = fillEmptyFields(tVal, eVal || {}, simplifiedReturn);
       } else if (typeof tVal === 'string' && tVal === '' && eVal !== undefined) {
-        res[key] = simplifiedReturn ? eVal : `${eVal} (${tVal?.type || typeof eVal}) ${tVal?.required ? '✅ required' : ''}`;
+        res[key] = simplifiedReturn ? eVal : `(${tVal?.type || typeof eVal}) ${tVal?.required ? '✅ required' : ''}`;
       } else if (tVal && typeof tVal === 'object' && ('type' in tVal || 'required' in tVal || 'default' in tVal)) {
         // schema leaf: include default if exists, otherwise use example value if provided
         if (eVal !== undefined) {
-          res[key] = simplifiedReturn ? eVal : `${eVal} (${tVal?.type || typeof eVal}) ${tVal?.required ? '✅ required' : ''}`;
+          res[key] = simplifiedReturn ? eVal : `(${tVal?.type || typeof eVal}) ${tVal?.required ? '✅ required' : ''}`;
         } else if (tVal.default !== undefined) {
-          res[key] = simplifiedReturn ? tVal : `${tVal.default} (${tVal?.type || typeof eVal}) ${tVal?.required ? '✅ required' : ''}`;
+          res[key] = simplifiedReturn ? tVal.default : `${tVal.default} (${tVal?.type || typeof eVal}) ${tVal?.required ? '✅ required' : ''}`;
         } else {
-          res[key] = simplifiedReturn ? '' : `empty (${tVal?.type || typeof eVal}) ${tVal?.required ? '✅ required' : ''}`
+          res[key] = simplifiedReturn ? '' : `(${tVal?.type || typeof eVal}) ${tVal?.required ? '✅ required' : ''}`
         }
       } else {
         res[key] = simplifiedReturn ? tVal : `${tVal} (${tVal?.type || typeof tVal}) ${tVal?.required ? '✅ required' : ''}`;
