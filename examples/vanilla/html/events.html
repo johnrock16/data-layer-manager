@@ -247,7 +247,7 @@ export default DataLayerManager;
   
     <script type="module" defer>
       document.addEventListener('DOMContentLoaded', () => {
-        const templates = {"view_cart":{"event":"view_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"required":true,"type":"number"},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"},"quantity":{"required":true,"type":"number"}}]},"docs":{"description":"An event triggered whenever the cart is viewed.","structureExpected":{"event":"view_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":12.24,"items":[{"item_id":48641234,"item_name":"sport-shoes","item_variant":"blue","item_vendor":"sport-products","price":12.24,"quantity":1}]}}}},"add_to_cart":{"event":"add_to_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"required":true,"type":"number"},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"},"quantity":{"required":true,"type":"number"}}]},"docs":{"description":"An event triggered whenever a item is added to cart.","structureExpected":{"event":"add_to_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":12.24,"items":[{"item_id":48641234,"item_name":"sport-shoes","item_variant":"blue","item_vendor":"sport-products","price":12.24,"quantity":1}]}}}},"remove_from_cart":{"event":"remove_from_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"required":true,"type":"number"},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"},"quantity":{"required":true,"type":"number"}}]},"docs":{"description":"An event triggered whenever a item is removed to cart.","structureExpected":{"event":"remove_from_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":12.24,"items":[{"item_id":48641234,"item_name":"sport-shoes","item_variant":"blue","item_vendor":"sport-products","price":12.24,"quantity":1}]}}}},"click":{"event":"click","event_type":"event_custom","custom_section":"","custom_type":"","custom_title":{"required":true,"type":"string"},"docs":{"description":"An event triggered whenever a click happens."}},"view_item":{"event":"view_item","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"type":"number","required":true},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"}}]},"docs":{"description":"An event triggered whenever the product is viewed.","structureExpected":{"event":"view_item","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":19.47,"items":[{"item_id":3405127896,"item_name":"cool-hat","item_variant":"black-white","item_vendor":"hat-company","price":19.47}]}}}},"view_items":{"event":"view_items","event_type":"event_ecomm_recommended","custom_title":"","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"type":"number","required":true},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"}}]}}};
+        const templates = {"view_cart":{"event":"view_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"required":true,"type":"number"},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"},"quantity":{"required":true,"type":"number"}}]},"docs":{"description":"An event triggered whenever the cart is viewed.","structureExpected":{"event":"view_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":12.24,"items":[{"item_id":48641234,"item_name":"sport-shoes","item_variant":"blue","item_vendor":"sport-products","price":12.24,"quantity":1}]}}}},"add_to_cart":{"event":"add_to_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"required":true,"type":"number"},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"},"quantity":{"required":true,"type":"number"}}]},"docs":{"description":"An event triggered whenever a item is added to cart.","structureExpected":{"event":"add_to_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":12.24,"items":[{"item_id":48641234,"item_name":"sport-shoes","item_variant":"blue","item_vendor":"sport-products","price":12.24,"quantity":1}]}}}},"remove_from_cart":{"event":"remove_from_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"required":true,"type":"number"},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"},"quantity":{"required":true,"type":"number"}}]},"docs":{"description":"An event triggered whenever a item is removed to cart.","structureExpected":{"event":"remove_from_cart","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":12.24,"items":[{"item_id":48641234,"item_name":"sport-shoes","item_variant":"blue","item_vendor":"sport-products","price":12.24,"quantity":1}]}}}},"click":{"event":"click","event_type":"event_custom","custom_section":"","custom_type":"","custom_title":{"required":true,"type":"string"},"docs":{"description":"An event triggered whenever a click happens.","structureExpected":{"event":"click","event_type":"event_custom","custom_section":"homepage","custom_type":"button","custom_title":"button-cart-add"}}},"view_item":{"event":"view_item","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"type":"number","required":true},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"}}]},"docs":{"description":"An event triggered whenever the product is viewed.","structureExpected":{"event":"view_item","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":19.47,"items":[{"item_id":3405127896,"item_name":"cool-hat","item_variant":"black-white","item_vendor":"hat-company","price":19.47}]}}}},"view_items":{"event":"view_items","event_type":"event_ecomm_recommended","custom_title":"","ecommerce":{"currency":"usd","value":{"required":true,"type":"number"},"items":[{"item_id":{"type":"number","required":true},"item_name":"","item_variant":"","item_vendor":"","price":{"required":true,"type":"number"}}]},"docs":{"description":"An event triggered whenever a collection is viewed.","structureExpected":{"event":"view_item","event_type":"event_ecomm_recommended","ecommerce":{"currency":"usd","value":39.46,"items":[{"item_id":3405127896,"item_name":"cool-hat","item_variant":"black-white","item_vendor":"hat-company","price":19.47},{"item_id":4876543419,"item_name":"cool-shirt","item_variant":"gray","item_vendor":"shirt-company","price":19.99}]}}}}};
         window.dataLayer = [];
         window.dataLayerManager = new window.DataLayerManager(templates, window.DATA_LAYER_MANAGER_CONFIG);
 
@@ -417,21 +417,21 @@ export default DataLayerManager;
   <p class="desc">An event triggered whenever a click happens.</p>
   <section class="section">
     <h3>Structure</h3>
-    <ul class="struct-list"><li><code>event</code>: <span class="val">click (string) </span></li><li><code>event_type</code>: <span class="val">event_custom (string) </span></li><li><code>custom_section</code>: <span class="val"> (string) </span></li><li><code>custom_type</code>: <span class="val"> (string) </span></li><li><code>custom_title</code>: <span class="val">(string) ✅ required</span></li></ul>
+    <ul class="struct-list"><li><code>event</code>: <span class="val">click (string) </span></li><li><code>event_type</code>: <span class="val">event_custom (string) </span></li><li><code>custom_section</code>: <span class="val">(string) </span></li><li><code>custom_type</code>: <span class="val">(string) </span></li><li><code>custom_title</code>: <span class="val">(string) ✅ required</span></li></ul>
   </section>
   <section class="section">
     <h3>Example Payload</h3>
     <pre class="json-block" id="json-generaljson-click">{
   &quot;event&quot;: &quot;click&quot;,
   &quot;event_type&quot;: &quot;event_custom&quot;,
-  &quot;custom_section&quot;: &quot;&quot;,
-  &quot;custom_type&quot;: &quot;&quot;,
-  &quot;custom_title&quot;: &quot;&quot;
+  &quot;custom_section&quot;: &quot;homepage&quot;,
+  &quot;custom_type&quot;: &quot;button&quot;,
+  &quot;custom_title&quot;: &quot;button-cart-add&quot;
 }</pre>
     <div class="actions">
       <button data-copy-target="json-generaljson-click" class="btn copy-btn">Copy JSON</button>
-      <a class="btn link-btn" href="#" data-open-console='{&quot;event&quot;:&quot;click&quot;,&quot;event_type&quot;:&quot;event_custom&quot;,&quot;custom_section&quot;:&quot;&quot;,&quot;custom_type&quot;:&quot;&quot;,&quot;custom_title&quot;:&quot;&quot;}'>Log to Console</a>
-      <button data-payload='{&quot;event&quot;:&quot;click&quot;,&quot;event_type&quot;:&quot;event_custom&quot;,&quot;custom_section&quot;:&quot;&quot;,&quot;custom_type&quot;:&quot;&quot;,&quot;custom_title&quot;:&quot;&quot;}' class="btn push-btn">Push Event</button>
+      <a class="btn link-btn" href="#" data-open-console='{&quot;event&quot;:&quot;click&quot;,&quot;event_type&quot;:&quot;event_custom&quot;,&quot;custom_section&quot;:&quot;homepage&quot;,&quot;custom_type&quot;:&quot;button&quot;,&quot;custom_title&quot;:&quot;button-cart-add&quot;}'>Log to Console</a>
+      <button data-payload='{&quot;event&quot;:&quot;click&quot;,&quot;event_type&quot;:&quot;event_custom&quot;,&quot;custom_section&quot;:&quot;homepage&quot;,&quot;custom_type&quot;:&quot;button&quot;,&quot;custom_title&quot;:&quot;button-cart-add&quot;}' class="btn push-btn">Push Event</button>
     </div>
   </section>
 </article>
@@ -482,35 +482,41 @@ export default DataLayerManager;
       <span class="source">Source: <code>product.json</code></span>
     </div>
   </header>
-  
+  <p class="desc">An event triggered whenever a collection is viewed.</p>
   <section class="section">
     <h3>Structure</h3>
-    <ul class="struct-list"><li><code>event</code>: <span class="val">view_items (string) </span></li><li><code>event_type</code>: <span class="val">event_ecomm_recommended (string) </span></li><li><code>custom_title</code>: <span class="val"> (string) </span></li><li><code>ecommerce (Object)</code><ul class="struct-list"><li><code>currency</code>: <span class="val">usd (string) </span></li><li><code>value</code>: <span class="val">(number) ✅ required</span></li><li><code>items (Array)</code><ul class="struct-list"><ul class="struct-list"><li><code>item_id</code>: <span class="val">(number) ✅ required</span></li><li><code>item_name</code>: <span class="val"> (string) </span></li><li><code>item_variant</code>: <span class="val"> (string) </span></li><li><code>item_vendor</code>: <span class="val"> (string) </span></li><li><code>price</code>: <span class="val">(number) ✅ required</span></li></ul></ul></li></ul></li></ul>
+    <ul class="struct-list"><li><code>event</code>: <span class="val">view_items (string) </span></li><li><code>event_type</code>: <span class="val">event_ecomm_recommended (string) </span></li><li><code>custom_title</code>: <span class="val"> (string) </span></li><li><code>ecommerce (Object)</code><ul class="struct-list"><li><code>currency</code>: <span class="val">usd (string) </span></li><li><code>value</code>: <span class="val">(number) ✅ required</span></li><li><code>items (Array)</code><ul class="struct-list"><ul class="struct-list"><li><code>item_id</code>: <span class="val">(number) ✅ required</span></li><li><code>item_name</code>: <span class="val">(string) </span></li><li><code>item_variant</code>: <span class="val">(string) </span></li><li><code>item_vendor</code>: <span class="val">(string) </span></li><li><code>price</code>: <span class="val">(number) ✅ required</span></li></ul></ul></li></ul></li></ul>
   </section>
   <section class="section">
     <h3>Example Payload</h3>
     <pre class="json-block" id="json-productjson-view_items">{
-  &quot;event&quot;: &quot;view_items&quot;,
+  &quot;event&quot;: &quot;view_item&quot;,
   &quot;event_type&quot;: &quot;event_ecomm_recommended&quot;,
-  &quot;custom_title&quot;: &quot;&quot;,
   &quot;ecommerce&quot;: {
     &quot;currency&quot;: &quot;usd&quot;,
-    &quot;value&quot;: &quot;&quot;,
+    &quot;value&quot;: 39.46,
     &quot;items&quot;: [
       {
-        &quot;item_id&quot;: &quot;&quot;,
-        &quot;item_name&quot;: &quot;&quot;,
-        &quot;item_variant&quot;: &quot;&quot;,
-        &quot;item_vendor&quot;: &quot;&quot;,
-        &quot;price&quot;: &quot;&quot;
+        &quot;item_id&quot;: 3405127896,
+        &quot;item_name&quot;: &quot;cool-hat&quot;,
+        &quot;item_variant&quot;: &quot;black-white&quot;,
+        &quot;item_vendor&quot;: &quot;hat-company&quot;,
+        &quot;price&quot;: 19.47
+      },
+      {
+        &quot;item_id&quot;: 4876543419,
+        &quot;item_name&quot;: &quot;cool-shirt&quot;,
+        &quot;item_variant&quot;: &quot;gray&quot;,
+        &quot;item_vendor&quot;: &quot;shirt-company&quot;,
+        &quot;price&quot;: 19.99
       }
     ]
   }
 }</pre>
     <div class="actions">
       <button data-copy-target="json-productjson-view_items" class="btn copy-btn">Copy JSON</button>
-      <a class="btn link-btn" href="#" data-open-console='{&quot;event&quot;:&quot;view_items&quot;,&quot;event_type&quot;:&quot;event_ecomm_recommended&quot;,&quot;custom_title&quot;:&quot;&quot;,&quot;ecommerce&quot;:{&quot;currency&quot;:&quot;usd&quot;,&quot;value&quot;:&quot;&quot;,&quot;items&quot;:[{&quot;item_id&quot;:&quot;&quot;,&quot;item_name&quot;:&quot;&quot;,&quot;item_variant&quot;:&quot;&quot;,&quot;item_vendor&quot;:&quot;&quot;,&quot;price&quot;:&quot;&quot;}]}}'>Log to Console</a>
-      <button data-payload='{&quot;event&quot;:&quot;view_items&quot;,&quot;event_type&quot;:&quot;event_ecomm_recommended&quot;,&quot;custom_title&quot;:&quot;&quot;,&quot;ecommerce&quot;:{&quot;currency&quot;:&quot;usd&quot;,&quot;value&quot;:&quot;&quot;,&quot;items&quot;:[{&quot;item_id&quot;:&quot;&quot;,&quot;item_name&quot;:&quot;&quot;,&quot;item_variant&quot;:&quot;&quot;,&quot;item_vendor&quot;:&quot;&quot;,&quot;price&quot;:&quot;&quot;}]}}' class="btn push-btn">Push Event</button>
+      <a class="btn link-btn" href="#" data-open-console='{&quot;event&quot;:&quot;view_item&quot;,&quot;event_type&quot;:&quot;event_ecomm_recommended&quot;,&quot;ecommerce&quot;:{&quot;currency&quot;:&quot;usd&quot;,&quot;value&quot;:39.46,&quot;items&quot;:[{&quot;item_id&quot;:3405127896,&quot;item_name&quot;:&quot;cool-hat&quot;,&quot;item_variant&quot;:&quot;black-white&quot;,&quot;item_vendor&quot;:&quot;hat-company&quot;,&quot;price&quot;:19.47},{&quot;item_id&quot;:4876543419,&quot;item_name&quot;:&quot;cool-shirt&quot;,&quot;item_variant&quot;:&quot;gray&quot;,&quot;item_vendor&quot;:&quot;shirt-company&quot;,&quot;price&quot;:19.99}]}}'>Log to Console</a>
+      <button data-payload='{&quot;event&quot;:&quot;view_item&quot;,&quot;event_type&quot;:&quot;event_ecomm_recommended&quot;,&quot;ecommerce&quot;:{&quot;currency&quot;:&quot;usd&quot;,&quot;value&quot;:39.46,&quot;items&quot;:[{&quot;item_id&quot;:3405127896,&quot;item_name&quot;:&quot;cool-hat&quot;,&quot;item_variant&quot;:&quot;black-white&quot;,&quot;item_vendor&quot;:&quot;hat-company&quot;,&quot;price&quot;:19.47},{&quot;item_id&quot;:4876543419,&quot;item_name&quot;:&quot;cool-shirt&quot;,&quot;item_variant&quot;:&quot;gray&quot;,&quot;item_vendor&quot;:&quot;shirt-company&quot;,&quot;price&quot;:19.99}]}}' class="btn push-btn">Push Event</button>
     </div>
   </section>
 </article>
@@ -519,7 +525,7 @@ export default DataLayerManager;
     </div>
 
     <footer>
-      Generated by Data Layer Manager — 06/11/2025, 04:48:16
+      Generated by Data Layer Manager — 23/11/2025, 02:08:37
     </footer>
   </div>
 

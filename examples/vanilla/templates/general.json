@@ -9,7 +9,14 @@
       "type": "string"
     },
     "docs": {
-      "description": "An event triggered whenever a click happens."
+      "description": "An event triggered whenever a click happens.",
+      "structureExpected": {
+        "event": "click",
+        "event_type": "event_custom",
+        "custom_section": "homepage",
+        "custom_type": "button",
+        "custom_title": "button-cart-add"
+      }
     }
   }
 }
